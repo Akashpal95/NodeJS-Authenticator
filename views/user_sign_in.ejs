@@ -1,0 +1,90 @@
+<link rel="stylesheet" href="/css/user_sign_in.css">
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<div id="sign-in-container">
+    <div id="left-container">
+        <img id="sign-in-img" src="/images/undraw_access_account_99n5.svg" alt="Sign In Image">
+        <a href="/users/sign-up">Create an account</a>
+    </div>
+    <div id="right-container">
+            <h3>Sign In</h3>
+            <form id="sign-in-form" action="/users/create-session" method="POST" class="text-center" >
+                <div class="md-form">
+                    <input type="email" id="email" name="email" placeholder="Email" class="form-control"  required>
+                </div>
+                <div class="md-form">
+                    <input type="password" id="password" name="password" placeholder="Password" class="form-control" required>
+                </div>
+                <div class="md-form">
+                        <div
+                          class="g-recaptcha"
+                          data-sitekey="6LdnsaoZAAAAAP8cNwwLxyrUSX1t1z3EwoO2VW2B"
+                          data-callback="recaptchaCallback"
+                        ></div>
+                </div>
+                <input id="btnSubmit" class="btn btn-block my-4"  type="submit" value="Sign In" style="align-self: end;" disabled >
+            
+            </form>
+            <div style="width:100%;display: flex; justify-content:space-between;">
+                    <p>
+                            <a href="/users/forgot-password" style="font-size: 0.8rem;">Forgot Password?</a>
+                        </p>
+                    <p>
+                        <span style="font-size: 0.7rem">or login with </span>
+                        <a href="/users/auth/google"><img src="https://image.flaticon.com/icons/svg/2965/2965278.svg" alt="Google" style="width:20px"></a>
+                    </p>
+            </div>
+            
+    </div>
+</div>
+<script>
+        let recaptchaCallback = function(){
+            console.log('callback')
+            const captcha = document.querySelector('#g-recaptcha-response').value;
+            return fetch('/users/check-captcha', {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({captcha })
+          })
+            .then(res => res.json())
+            .then(data => {
+              console.log(typeof( data.success ));
+              captchaCheckDone = true;
+              if(!data.success){
+                    alert(data.msg);
+                    console.log('Error')
+              }else{
+                var btnSubmit = document.getElementById("btnSubmit");
+                btnSubmit.disabled = false;
+                alert(data.msg);
+              }
+            });
+        }
+        window.recaptchaCallback = recaptchaCallback;
+        // let captchaCheckDone = false;
+        // document.getElementById('sign-in-form').addEventListener('submit', e => {
+        //     if(!captchaCheckDone){
+        //         e.preventDefault();
+        //     }
+  
+        //   const password = document.querySelector('#password').value;
+        //   const email = document.querySelector('#email').value;
+        //   const captcha = document.querySelector('#g-recaptcha-response').value;
+        //     console.log(password, email, captcha);
+        //   return fetch('/users/check-captcha', {
+        //     method: 'POST',
+        //     headers: { 'Content-type': 'application/json' },
+        //     body: JSON.stringify({ password, email, captcha })
+        //   })
+        //     .then(res => {
+        //         console.log(res);
+        //     })
+        //     // .then(data => {
+        //     //   console.log(typeof( data.success ));
+        //     //   captchaCheckDone = true;
+        //     //   if(!data.success){
+        //     //         alert(data.msg);
+        //     //         console.log('Error')
+        //     //   }
+        //     // });
+        // });
+</script>

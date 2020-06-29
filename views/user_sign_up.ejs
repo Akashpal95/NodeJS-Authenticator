@@ -1,0 +1,69 @@
+<link rel="stylesheet" href="/css/user_sign_up.css">
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<div id="sign-up-container">
+    <div id="left-container">
+        <img id="sign-up-img" src="/images/undraw_sign_in_e6hj.svg" alt="Sign Up Image">
+        <a href="/users/sign-in">Already have an account.</a>
+    </div>
+    <div id="right-container">
+            <h3>Sign Up</h3>
+            <form action="/users/create" method="POST" class="text-center">
+                <div class="md-form">
+                    <input type="text" name="name" placeholder="Your Name" class="form-control" required>
+                </div>
+                <div class="md-form">
+                    <input type="email" name="email" placeholder="Your Email" class="form-control" required>
+                </div>
+                <div class="md-form">
+                    <input type="password" name="password" placeholder="Password" class="form-control" required>
+                </div>
+                <div class="md-form">
+                    <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control"
+                    required>
+                </div>
+                <div class="md-form">
+                        <div
+                          class="g-recaptcha"
+                          data-sitekey="6LdnsaoZAAAAAP8cNwwLxyrUSX1t1z3EwoO2VW2B"
+                          data-callback="recaptchaCallback"
+                        ></div>
+                </div>
+                <input id="btnSubmit" class="btn btn-block my-4" type="submit" value="Sign Up" disabled>
+            </form>
+            <div style="width:100%;display: flex; justify-content:space-between;">
+            <p>
+                    <a href="/users/forgot-password" style="font-size: 0.8rem;">Forgot Password?</a>
+                </p>
+            <p>
+                <span style="font-size: 0.7rem">or login with </span>
+                <a href="/users/auth/google"><img src="https://image.flaticon.com/icons/svg/2965/2965278.svg" alt="Google" style="width:20px"></a>
+            </p>
+            </div>
+            
+    </div>
+</div>
+<script>
+        let recaptchaCallback = function(){
+            console.log('callback')
+            const captcha = document.querySelector('#g-recaptcha-response').value;
+            return fetch('/users/check-captcha', {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({captcha })
+          })
+            .then(res => res.json())
+            .then(data => {
+              console.log(typeof( data.success ));
+              captchaCheckDone = true;
+              if(!data.success){
+                    alert(data.msg);
+                    console.log('Error')
+              }else{
+                var btnSubmit = document.getElementById("btnSubmit");
+                btnSubmit.disabled = false;
+                alert(data.msg);
+              }
+            });
+        }
+        window.recaptchaCallback = recaptchaCallback;
+</script>

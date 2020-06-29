@@ -1,0 +1,31 @@
+#find-account-container{
+    width:60vw;
+    height:40vh;
+    display:flex;
+    margin:auto;
+    margin-top:200px;
+    box-shadow: 0px 6px 9px 4px #0000002e;
+    border-radius: 10px;
+    display:flex;
+    justify-content: space-evenly;
+    background-color: white;
+    padding:10px;
+}
+#find-account-img{
+    width:200px;
+    height:200px;
+}
+#rigth-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.md-form{
+    margin:20px;
+}
+.btn{
+    background-color: #575989;
+}
+.btn:hover{
+    background-color: #3f3d55;
+}
