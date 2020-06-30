@@ -267,7 +267,7 @@ module.exports.recaptcha = async function(req, res){
     }
 
   // Secret key
-  const secretKey = '6LdnsaoZAAAAALH9FYw7R9trhW9zIAVJK_NQM-6g';
+  const secretKey = '';//Put your own secret key
 
   // Verify URL
   const query = stringify({
